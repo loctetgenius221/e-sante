@@ -6,5 +6,5 @@
 </template>
 
 <script setup>
-import PlaceholderPage from "../../PlaceholderPage.vue";
+import PlaceholderPage from "@/components/pages/PlaceholderPage.vue";
 </script>
