@@ -1,0 +1,825 @@
+<template>
+  <DashboardLayout
+    :navigation-items="navigationItems"
+    page-title="Mes Produits"
+  >
+    <!-- Header Actions -->
+    <div class="mb-6 flex flex-col sm:flex-row gap-4 justify-between">
+      <div class="flex gap-3">
+        <BaseButton variant="primary" @click="showCreateProductModal = true">
+          <template #icon-left>
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+          </template>
+          Ajouter un produit
+        </BaseButton>
+        <BaseButton variant="outline" @click="exportProducts">
+          <template #icon-left>
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+          </template>
+          Exporter
+        </BaseButton>
+      </div>
+
+      <!-- Search and Filters -->
+      <div class="flex gap-3">
+        <SearchInput
+          v-model="searchQuery"
+          placeholder="Rechercher un produit..."
+          class="w-64"
+        />
+        <BaseButton variant="outline" @click="showFilters = !showFilters">
+          <template #icon-left>
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+              />
+            </svg>
+          </template>
+          Filtres
+        </BaseButton>
+      </div>
+    </div>
+
+    <!-- Filters Panel -->
+    <div
+      v-if="showFilters"
+      class="mb-6 bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >Catégorie</label
+          >
+          <select
+            v-model="filters.category"
+            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          >
+            <option value="">Toutes les catégories</option>
+            <option value="medicaments">Médicaments</option>
+            <option value="equipements">Équipements</option>
+            <option value="reagents">Réactifs</option>
+            <option value="services">Services</option>
+          </select>
+        </div>
+        <div>
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >Statut</label
+          >
+          <select
+            v-model="filters.status"
+            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          >
+            <option value="">Tous les statuts</option>
+            <option value="active">Actif</option>
+            <option value="inactive">Inactif</option>
+            <option value="pending">En attente</option>
+          </select>
+        </div>
+        <div>
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >Prix</label
+          >
+          <select
+            v-model="filters.priceRange"
+            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          >
+            <option value="">Tous les prix</option>
+            <option value="0-100">0 - 100€</option>
+            <option value="100-500">100 - 500€</option>
+            <option value="500-1000">500 - 1000€</option>
+            <option value="1000+">1000€+</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <BaseButton variant="outline" @click="clearFilters" class="w-full">
+            Effacer les filtres
+          </BaseButton>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <BaseCard>
+        <div class="flex items-center">
+          <div class="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
+            <svg
+              class="w-6 h-6 text-blue-600 dark:text-blue-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+              />
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+              Total Produits
+            </p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              {{ totalProducts }}
+            </p>
+          </div>
+        </div>
+      </BaseCard>
+
+      <BaseCard>
+        <div class="flex items-center">
+          <div class="p-3 bg-green-100 dark:bg-green-900 rounded-lg">
+            <svg
+              class="w-6 h-6 text-green-600 dark:text-green-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+              Actifs
+            </p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              {{ activeProducts }}
+            </p>
+          </div>
+        </div>
+      </BaseCard>
+
+      <BaseCard>
+        <div class="flex items-center">
+          <div class="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
+            <svg
+              class="w-6 h-6 text-yellow-600 dark:text-yellow-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+              />
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+              Chiffre d'affaires
+            </p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              {{ totalRevenue }}€
+            </p>
+          </div>
+        </div>
+      </BaseCard>
+
+      <BaseCard>
+        <div class="flex items-center">
+          <div class="p-3 bg-purple-100 dark:bg-purple-900 rounded-lg">
+            <svg
+              class="w-6 h-6 text-purple-600 dark:text-purple-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+              />
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+              Commandes
+            </p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              {{ totalOrders }}
+            </p>
+          </div>
+        </div>
+      </BaseCard>
+    </div>
+
+    <!-- Products List -->
+    <div class="space-y-6">
+      <div v-if="isLoading" class="space-y-4">
+        <div
+          v-for="i in 3"
+          :key="i"
+          class="bg-white dark:bg-gray-800 rounded-lg p-6 animate-pulse"
+        >
+          <div
+            class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-2"
+          ></div>
+          <div
+            class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"
+          ></div>
+          <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+        </div>
+      </div>
+
+      <div v-else-if="filteredProducts.length === 0" class="text-center py-12">
+        <svg
+          class="mx-auto h-12 w-12 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+          />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+          Aucun produit trouvé
+        </h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          Commencez par ajouter votre premier produit.
+        </p>
+        <div class="mt-6">
+          <BaseButton variant="primary" @click="showCreateProductModal = true">
+            Ajouter un produit
+          </BaseButton>
+        </div>
+      </div>
+
+      <div v-else class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        <BaseCard
+          v-for="product in filteredProducts"
+          :key="product.id"
+          class="hover:shadow-lg transition-shadow duration-200"
+        >
+          <div class="flex justify-between items-start mb-4">
+            <div class="flex-1">
+              <h3
+                class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"
+              >
+                {{ product.name }}
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                {{ product.description }}
+              </p>
+            </div>
+            <BaseBadge :variant="getStatusVariant(product.status)" size="sm">
+              {{ getStatusText(product.status) }}
+            </BaseBadge>
+          </div>
+
+          <div class="space-y-3 mb-4">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-600 dark:text-gray-400"
+                >Prix:</span
+              >
+              <span
+                class="text-lg font-semibold text-gray-900 dark:text-gray-100"
+                >{{ product.price }}€</span
+              >
+            </div>
+            <div
+              class="flex items-center text-sm text-gray-600 dark:text-gray-400"
+            >
+              <svg
+                class="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                />
+              </svg>
+              {{ product.category }}
+            </div>
+            <div
+              class="flex items-center text-sm text-gray-600 dark:text-gray-400"
+            >
+              <svg
+                class="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                />
+              </svg>
+              {{ product.orders }} commandes
+            </div>
+            <div
+              class="flex items-center text-sm text-gray-600 dark:text-gray-400"
+            >
+              <svg
+                class="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              Ajouté le {{ formatDate(product.createdAt) }}
+            </div>
+          </div>
+
+          <div class="flex gap-2">
+            <BaseButton
+              variant="outline"
+              size="sm"
+              @click="viewProduct(product)"
+              class="flex-1"
+            >
+              Voir
+            </BaseButton>
+            <BaseButton
+              variant="outline"
+              size="sm"
+              @click="editProduct(product)"
+              class="flex-1"
+            >
+              Modifier
+            </BaseButton>
+            <BaseButton
+              variant="outline"
+              size="sm"
+              @click="toggleProductStatus(product)"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+                />
+              </svg>
+            </BaseButton>
+          </div>
+        </BaseCard>
+      </div>
+    </div>
+
+    <!-- Create Product Modal -->
+    <BaseModal
+      v-model:open="showCreateProductModal"
+      title="Ajouter un nouveau produit"
+      size="lg"
+    >
+      <form @submit.prevent="createProduct" class="space-y-6">
+        <div>
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
+            Nom du produit *
+          </label>
+          <BaseInput
+            v-model="newProduct.name"
+            placeholder="Ex: Analyseur de médicaments X2000"
+            required
+          />
+        </div>
+
+        <div>
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
+            Description *
+          </label>
+          <textarea
+            v-model="newProduct.description"
+            rows="3"
+            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            placeholder="Décrivez les caractéristiques du produit..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >
+              Catégorie *
+            </label>
+            <select
+              v-model="newProduct.category"
+              class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              required
+            >
+              <option value="">Sélectionner une catégorie</option>
+              <option value="medicaments">Médicaments</option>
+              <option value="equipements">Équipements</option>
+              <option value="reagents">Réactifs</option>
+              <option value="services">Services</option>
+            </select>
+          </div>
+
+          <div>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >
+              Prix (€) *
+            </label>
+            <BaseInput
+              v-model="newProduct.price"
+              type="number"
+              placeholder="299.99"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >
+              Stock disponible
+            </label>
+            <BaseInput
+              v-model="newProduct.stock"
+              type="number"
+              placeholder="100"
+            />
+          </div>
+
+          <div>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >
+              Statut
+            </label>
+            <select
+              v-model="newProduct.status"
+              class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            >
+              <option value="active">Actif</option>
+              <option value="inactive">Inactif</option>
+              <option value="pending">En attente</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3">
+          <BaseButton
+            type="button"
+            variant="outline"
+            @click="showCreateProductModal = false"
+          >
+            Annuler
+          </BaseButton>
+          <BaseButton type="submit" variant="primary" :loading="isCreating">
+            Ajouter le produit
+          </BaseButton>
+        </div>
+      </form>
+    </BaseModal>
+  </DashboardLayout>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from "vue";
+import DashboardLayout from "@/components/layouts/DashboardLayout.vue";
+import BaseCard from "@/components/atoms/BaseCard.vue";
+import BaseButton from "@/components/atoms/BaseButton.vue";
+import BaseBadge from "@/components/atoms/BaseBadge.vue";
+import BaseInput from "@/components/atoms/BaseInput.vue";
+import BaseModal from "@/components/atoms/BaseModal.vue";
+import SearchInput from "@/components/molecules/SearchInput.vue";
+
+// Navigation items pour le dashboard laboratoire
+const navigationItems = ref([
+  {
+    name: "Tableau de bord",
+    href: "/laboratory/dashboard",
+    iconPath:
+      "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6",
+  },
+  {
+    name: "Mes formations",
+    href: "/laboratory/trainings",
+    iconPath:
+      "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
+  },
+  {
+    name: "Mes produits",
+    href: "/laboratory/products",
+    iconPath: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+  },
+  {
+    name: "Demandes",
+    href: "/laboratory/requests",
+    iconPath:
+      "M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2",
+  },
+  {
+    name: "Analytics",
+    href: "/laboratory/analytics",
+    iconPath:
+      "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+  },
+  {
+    name: "Profil",
+    href: "/laboratory/profile",
+    iconPath:
+      "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
+  },
+]);
+
+// State
+const isLoading = ref(true);
+const showCreateProductModal = ref(false);
+const showFilters = ref(false);
+const isCreating = ref(false);
+const searchQuery = ref("");
+const filters = ref({
+  category: "",
+  status: "",
+  priceRange: "",
+});
+
+// New product form
+const newProduct = ref({
+  name: "",
+  description: "",
+  category: "",
+  price: "",
+  stock: "",
+  status: "active",
+});
+
+// Mock data
+const products = ref([
+  {
+    id: 1,
+    name: "Analyseur de médicaments X2000",
+    description:
+      "Équipement de pointe pour l'analyse des médicaments génériques",
+    category: "Équipements",
+    price: 15000,
+    stock: 5,
+    status: "active",
+    orders: 12,
+    createdAt: "2024-01-15",
+  },
+  {
+    id: 2,
+    name: "Réactifs d'analyse biochimique",
+    description: "Kit complet de réactifs pour analyses biochimiques",
+    category: "Réactifs",
+    price: 299,
+    stock: 50,
+    status: "active",
+    orders: 8,
+    createdAt: "2024-01-10",
+  },
+  {
+    id: 3,
+    name: "Service d'analyse clinique",
+    description: "Service d'analyse clinique personnalisé",
+    category: "Services",
+    price: 150,
+    stock: null,
+    status: "active",
+    orders: 25,
+    createdAt: "2024-01-20",
+  },
+  {
+    id: 4,
+    name: "Microscope électronique Pro",
+    description: "Microscope électronique haute résolution pour laboratoires",
+    category: "Équipements",
+    price: 25000,
+    stock: 2,
+    status: "pending",
+    orders: 0,
+    createdAt: "2024-01-05",
+  },
+]);
+
+// Computed
+const filteredProducts = computed(() => {
+  let filtered = products.value;
+
+  // Search filter
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase();
+    filtered = filtered.filter(
+      (product) =>
+        product.name.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query)
+    );
+  }
+
+  // Category filter
+  if (filters.value.category) {
+    filtered = filtered.filter(
+      (product) =>
+        product.category.toLowerCase() === filters.value.category.toLowerCase()
+    );
+  }
+
+  // Status filter
+  if (filters.value.status) {
+    filtered = filtered.filter(
+      (product) => product.status === filters.value.status
+    );
+  }
+
+  // Price range filter
+  if (filters.value.priceRange) {
+    const [min, max] = filters.value.priceRange.split("-").map(Number);
+    filtered = filtered.filter((product) => {
+      if (max) {
+        return product.price >= min && product.price <= max;
+      } else {
+        return product.price >= min;
+      }
+    });
+  }
+
+  return filtered;
+});
+
+const totalProducts = computed(() => products.value.length);
+const activeProducts = computed(
+  () => products.value.filter((p) => p.status === "active").length
+);
+const totalRevenue = computed(() =>
+  products.value.reduce((sum, p) => sum + p.price * p.orders, 0)
+);
+const totalOrders = computed(() =>
+  products.value.reduce((sum, p) => sum + p.orders, 0)
+);
+
+// Methods
+const getStatusVariant = (status) => {
+  switch (status) {
+    case "active":
+      return "success";
+    case "inactive":
+      return "danger";
+    case "pending":
+      return "warning";
+    default:
+      return "info";
+  }
+};
+
+const getStatusText = (status) => {
+  switch (status) {
+    case "active":
+      return "Actif";
+    case "inactive":
+      return "Inactif";
+    case "pending":
+      return "En attente";
+    default:
+      return "Inconnu";
+  }
+};
+
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString("fr-FR");
+};
+
+const viewProduct = (product) => {
+  console.log("Viewing product:", product.id);
+  // Navigate to product detail page
+};
+
+const editProduct = (product) => {
+  console.log("Editing product:", product.id);
+  // Navigate to product edit page
+};
+
+const toggleProductStatus = (product) => {
+  product.status = product.status === "active" ? "inactive" : "active";
+  console.log("Toggled product status:", product.id, product.status);
+};
+
+const createProduct = async () => {
+  try {
+    isCreating.value = true;
+
+    const product = {
+      id: products.value.length + 1,
+      name: newProduct.value.name,
+      description: newProduct.value.description,
+      category: newProduct.value.category,
+      price: parseFloat(newProduct.value.price),
+      stock: newProduct.value.stock ? parseInt(newProduct.value.stock) : null,
+      status: newProduct.value.status,
+      orders: 0,
+      createdAt: new Date().toISOString().split("T")[0],
+    };
+
+    products.value.unshift(product);
+    showCreateProductModal.value = false;
+
+    // Reset form
+    newProduct.value = {
+      name: "",
+      description: "",
+      category: "",
+      price: "",
+      stock: "",
+      status: "active",
+    };
+  } catch (error) {
+    console.error("Error creating product:", error);
+  } finally {
+    isCreating.value = false;
+  }
+};
+
+const exportProducts = () => {
+  console.log("Exporting products...");
+  // Export logic
+};
+
+const clearFilters = () => {
+  filters.value = {
+    category: "",
+    status: "",
+    priceRange: "",
+  };
+  searchQuery.value = "";
+};
+
+// Lifecycle
+onMounted(async () => {
+  try {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  } catch (error) {
+    console.error("Error loading products:", error);
+  } finally {
+    isLoading.value = false;
+  }
+});
+</script>

@@ -6,10 +6,32 @@
       <div class="flex justify-between items-center h-16">
         <!-- Logo -->
         <div class="flex items-center">
-          <RouterLink to="/" class="flex items-center space-x-2">
-            <span class="text-xl font-bold text-gray-900 dark:text-gray-100"
-              >Logo</span
+          <RouterLink to="/" class="flex items-center space-x-3">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center"
             >
+              <svg
+                class="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                />
+              </svg>
+            </div>
+            <div class="hidden sm:block">
+              <span class="text-xl font-bold text-gray-900 dark:text-gray-100"
+                >Synapse</span
+              >
+              <div class="text-xs text-gray-500 dark:text-gray-400">
+                Sénégal
+              </div>
+            </div>
           </RouterLink>
         </div>
 
@@ -72,8 +94,7 @@
             </svg>
           </button>
 
-          <!-- Auth buttons -->
-          <div v-if="!isAuthenticated" class="flex items-center space-x-2">
+          <div class="hidden md:flex items-center space-x-2">
             <RouterLink
               to="/auth/login"
               class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 text-sm font-medium transition-colors"
@@ -86,19 +107,6 @@
             >
               S'inscrire
             </RouterLink>
-          </div>
-
-          <!-- User menu -->
-          <div v-else class="flex items-center space-x-2">
-            <span class="text-sm text-gray-700 dark:text-gray-300">
-              Bonjour, {{ user?.name }}
-            </span>
-            <button
-              @click="logout"
-              class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 text-sm font-medium transition-colors"
-            >
-              Déconnexion
-            </button>
           </div>
 
           <!-- Mobile menu button -->
@@ -159,6 +167,22 @@
             Produits
           </RouterLink>
         </nav>
+
+        <!--  -->
+        <div class="flex items-center space-x-2">
+          <RouterLink
+            to="/auth/login"
+            class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 text-sm font-medium transition-colors"
+          >
+            Connexion
+          </RouterLink>
+          <RouterLink
+            to="/auth/signup"
+            class="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            S'inscrire
+          </RouterLink>
+        </div>
       </div>
     </div>
   </header>

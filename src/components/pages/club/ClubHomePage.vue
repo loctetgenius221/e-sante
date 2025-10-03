@@ -1,41 +1,101 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Header -->
+  <DashboardLayout
+    :navigation-items="navigationItems"
+    page-title="Club Digital"
+  >
+    <div class="space-y-8">
+      <!-- Welcome Section -->
       <div class="mb-8">
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
-              Club Digital
-            </h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-2">
-              Communauté exclusive des professionnels de santé
-            </p>
-          </div>
-          <BaseButton variant="primary" @click="$router.push('/club/forum')">
-            <template #icon-left>
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+        <div
+          class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-8"
+        >
+          <div class="flex flex-col lg:flex-row items-center justify-between">
+            <div class="flex-1">
+              <h1
+                class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-              </svg>
-            </template>
-            Participer au forum
-          </BaseButton>
+                Bienvenue dans le Club Digital
+              </h1>
+              <p
+                class="text-lg text-gray-600 dark:text-gray-400 mb-6 max-w-2xl"
+              >
+                Rejoignez la communauté exclusive des professionnels de santé.
+                Échangez, apprenez et grandissez ensemble dans un environnement
+                professionnel.
+              </p>
+              <div class="flex flex-col sm:flex-row gap-4">
+                <BaseButton
+                  variant="primary"
+                  @click="$router.push('/club/forum')"
+                >
+                  <template #icon-left>
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                      />
+                    </svg>
+                  </template>
+                  Participer au forum
+                </BaseButton>
+                <BaseButton
+                  variant="outline"
+                  @click="$router.push('/club/evenements')"
+                >
+                  <template #icon-left>
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </template>
+                  Voir les événements
+                </BaseButton>
+              </div>
+            </div>
+            <div class="mt-8 lg:mt-0 lg:ml-8">
+              <div
+                class="w-64 h-64 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center"
+              >
+                <svg
+                  class="w-32 h-32 text-white opacity-80"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-8">
+          <!-- Statistics -->
+          <ClubStats />
           <!-- Actualités -->
           <BaseCard>
             <template #header>
@@ -188,6 +248,9 @@
 
         <!-- Sidebar -->
         <div class="space-y-6">
+          <!-- Active Members -->
+          <ActiveMembers />
+
           <!-- Événements à venir -->
           <BaseCard>
             <template #header>
@@ -382,17 +445,60 @@
         </div>
       </div>
     </div>
-  </div>
+  </DashboardLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { useForumStore } from "@/stores/forum";
+import DashboardLayout from "@/components/layouts/DashboardLayout.vue";
 import BaseCard from "@/components/atoms/BaseCard.vue";
 import BaseButton from "@/components/atoms/BaseButton.vue";
 import BaseBadge from "@/components/atoms/BaseBadge.vue";
+import ClubStats from "@/components/molecules/ClubStats.vue";
+import ActiveMembers from "@/components/molecules/ActiveMembers.vue";
 
 const forumStore = useForumStore();
+
+// Navigation items pour le Club Digital
+const navigationItems = ref([
+  {
+    name: "Tableau de bord",
+    href: "/club/dashboard",
+    iconPath:
+      "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6",
+  },
+  {
+    name: "Forum",
+    href: "/club/forum",
+    iconPath:
+      "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z",
+  },
+  {
+    name: "Messagerie",
+    href: "/club/messagerie",
+    iconPath:
+      "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z",
+    badge: { text: "3", variant: "danger" },
+  },
+  {
+    name: "Événements",
+    href: "/club/evenements",
+    iconPath:
+      "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+  },
+  {
+    name: "Opportunités",
+    href: "/club/opportunites",
+    iconPath:
+      "M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6",
+  },
+  {
+    name: "Retour au Dashboard",
+    href: "/professional/dashboard",
+    iconPath: "M10 19l-7-7m0 0l7-7m-7 7h18",
+  },
+]);
 
 const newsFeed = ref([
   {

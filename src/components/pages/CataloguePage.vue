@@ -24,184 +24,333 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="flex flex-col lg:flex-row gap-8">
-        <!-- Filters Sidebar -->
-        <div class="lg:w-64 flex-shrink-0">
-          <BaseCard class="sticky top-24">
-            <h3
-              class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4"
+        <!-- Modern Filters Sidebar -->
+        <div class="lg:w-80 flex-shrink-0">
+          <div
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 sticky top-24 overflow-hidden"
+          >
+            <!-- Filter Header -->
+            <div
+              class="bg-gray-50 dark:bg-gray-700 p-6 border-b border-gray-200 dark:border-gray-600"
             >
-              Filtres
-            </h3>
-
-            <!-- Search -->
-            <div class="mb-6">
-              <SearchInput
-                :model-value="searchQuery"
-                placeholder="Rechercher..."
-                @update:model-value="handleSearch"
-                @search="handleSearchSubmit"
-              />
-            </div>
-
-            <!-- Theme Filter -->
-            <div class="mb-6">
-              <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-              >
-                Thème
-              </label>
-              <select
-                v-model="filters.theme"
-                @change="applyFilters"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-              >
-                <option value="">Tous les thèmes</option>
-                <option v-for="theme in themes" :key="theme" :value="theme">
-                  {{ theme }}
-                </option>
-              </select>
-            </div>
-
-            <!-- Format Filter -->
-            <div class="mb-6">
-              <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-              >
-                Format
-              </label>
-              <select
-                v-model="filters.format"
-                @change="applyFilters"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-              >
-                <option value="">Tous les formats</option>
-                <option v-for="format in formats" :key="format" :value="format">
-                  {{ format }}
-                </option>
-              </select>
-            </div>
-
-            <!-- Difficulty Filter -->
-            <div class="mb-6">
-              <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-              >
-                Niveau
-              </label>
-              <select
-                v-model="filters.difficulty"
-                @change="applyFilters"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-              >
-                <option value="">Tous les niveaux</option>
-                <option
-                  v-for="difficulty in difficulties"
-                  :key="difficulty"
-                  :value="difficulty"
+              <div class="flex items-center space-x-3">
+                <div
+                  class="w-10 h-10 bg-gray-200 dark:bg-gray-600 rounded-xl flex items-center justify-center"
                 >
-                  {{ getDifficultyLabel(difficulty) }}
-                </option>
-              </select>
+                  <svg
+                    class="w-6 h-6 text-gray-600 dark:text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3
+                    class="text-lg font-bold text-gray-900 dark:text-gray-100"
+                  >
+                    Filtres
+                  </h3>
+                  <p class="text-gray-600 dark:text-gray-400 text-sm">
+                    Affinez votre recherche
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <!-- Clear Filters -->
-            <BaseButton
-              variant="outline"
-              size="sm"
-              @click="clearFilters"
-              full-width
-            >
-              Effacer les filtres
-            </BaseButton>
-          </BaseCard>
+            <div class="p-6 space-y-6">
+              <!-- Search -->
+              <div>
+                <label
+                  class="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3"
+                >
+                  Recherche
+                </label>
+                <SearchInput
+                  :model-value="searchQuery"
+                  placeholder="Rechercher une formation..."
+                  @update:model-value="handleSearch"
+                  @search="handleSearchSubmit"
+                  class="w-full"
+                />
+              </div>
+
+              <!-- Theme Filter -->
+              <div>
+                <label
+                  class="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3"
+                >
+                  Thème
+                </label>
+                <div class="space-y-2">
+                  <button
+                    v-for="theme in themes"
+                    :key="theme"
+                    @click="toggleThemeFilter(theme)"
+                    :class="[
+                      'w-full text-left px-4 py-3 rounded-xl transition-all duration-200',
+                      filters.theme === theme
+                        ? 'bg-gray-900 text-white shadow-lg'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600',
+                    ]"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="font-medium">{{ theme }}</span>
+                      <svg
+                        v-if="filters.theme === theme"
+                        class="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Format Filter -->
+              <div>
+                <label
+                  class="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3"
+                >
+                  Format
+                </label>
+                <div class="space-y-2">
+                  <button
+                    v-for="format in formats"
+                    :key="format"
+                    @click="toggleFormatFilter(format)"
+                    :class="[
+                      'w-full text-left px-4 py-3 rounded-xl transition-all duration-200',
+                      filters.format === format
+                        ? 'bg-gray-900 text-white shadow-lg'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600',
+                    ]"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="font-medium">{{ format }}</span>
+                      <svg
+                        v-if="filters.format === format"
+                        class="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Difficulty Filter -->
+              <div>
+                <label
+                  class="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3"
+                >
+                  Niveau
+                </label>
+                <div class="space-y-2">
+                  <button
+                    v-for="difficulty in difficulties"
+                    :key="difficulty"
+                    @click="toggleDifficultyFilter(difficulty)"
+                    :class="[
+                      'w-full text-left px-4 py-3 rounded-xl transition-all duration-200',
+                      filters.difficulty === difficulty
+                        ? 'bg-gray-900 text-white shadow-lg'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600',
+                    ]"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="font-medium">{{
+                        getDifficultyLabel(difficulty)
+                      }}</span>
+                      <svg
+                        v-if="filters.difficulty === difficulty"
+                        class="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Clear Filters -->
+              <div class="pt-4 border-t border-gray-200 dark:border-gray-600">
+                <BaseButton
+                  variant="outline"
+                  size="sm"
+                  @click="clearFilters"
+                  full-width
+                  class="border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                >
+                  <template #icon-left>
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </template>
+                  Effacer les filtres
+                </BaseButton>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Main Content -->
         <div class="flex-1">
-          <!-- Results Header -->
+          <!-- Modern Results Header -->
           <div
-            class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6"
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-8"
           >
-            <div>
-              <h2
-                class="text-xl font-semibold text-gray-900 dark:text-gray-100"
-              >
-                {{ filteredTrainings.length }} formation{{
-                  filteredTrainings.length > 1 ? "s" : ""
-                }}
-              </h2>
-              <p class="text-sm text-gray-600 dark:text-gray-400">
-                {{ getActiveFiltersText() }}
-              </p>
-            </div>
+            <div
+              class="flex flex-col sm:flex-row justify-between items-start sm:items-center"
+            >
+              <div class="flex-1">
+                <div class="flex items-center space-x-4 mb-2">
+                  <div class="flex items-center space-x-2">
+                    <div
+                      class="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center"
+                    >
+                      <svg
+                        class="w-4 h-4 text-gray-600 dark:text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                        />
+                      </svg>
+                    </div>
+                    <h2
+                      class="text-2xl font-bold text-gray-900 dark:text-gray-100"
+                    >
+                      {{ filteredTrainings.length }} formation{{
+                        filteredTrainings.length > 1 ? "s" : ""
+                      }}
+                    </h2>
+                  </div>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  {{ getActiveFiltersText() }}
+                </p>
+              </div>
 
-            <!-- View Toggle -->
-            <div class="flex items-center space-x-2 mt-4 sm:mt-0">
-              <button
-                @click="viewMode = 'grid'"
-                :class="
-                  viewMode === 'grid'
-                    ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900'
-                    : 'text-gray-500 dark:text-gray-400'
-                "
-                class="p-2 rounded-lg transition-colors"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                  />
-                </svg>
-              </button>
-              <button
-                @click="viewMode = 'list'"
-                :class="
-                  viewMode === 'list'
-                    ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900'
-                    : 'text-gray-500 dark:text-gray-400'
-                "
-                class="p-2 rounded-lg transition-colors"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 10h16M4 14h16M4 18h16"
-                  />
-                </svg>
-              </button>
+              <!-- Modern View Toggle -->
+              <div class="flex items-center space-x-2 mt-4 sm:mt-0">
+                <div class="bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
+                  <button
+                    @click="viewMode = 'grid'"
+                    :class="[
+                      'px-3 py-2 rounded-lg transition-all duration-200',
+                      viewMode === 'grid'
+                        ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300',
+                    ]"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    @click="viewMode = 'list'"
+                    :class="[
+                      'px-3 py-2 rounded-lg transition-all duration-200',
+                      viewMode === 'list'
+                        ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300',
+                    ]"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 10h16M4 14h16M4 18h16"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- Loading State -->
           <div
             v-if="isLoading"
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             <div v-for="n in 6" :key="n" class="animate-pulse">
-              <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+              <div
+                class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
+              >
                 <div
-                  class="h-48 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4"
+                  class="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl mb-6"
                 ></div>
                 <div
-                  class="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2"
+                  class="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-3"
                 ></div>
                 <div
-                  class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4"
+                  class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"
                 ></div>
+                <div class="flex space-x-2">
+                  <div
+                    class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-16"
+                  ></div>
+                  <div
+                    class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-20"
+                  ></div>
+                </div>
               </div>
             </div>
           </div>
@@ -209,31 +358,57 @@
           <!-- Empty State -->
           <div
             v-else-if="filteredTrainings.length === 0"
-            class="text-center py-12"
+            class="text-center py-16"
           >
-            <svg
-              class="mx-auto h-12 w-12 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+            <div
+              class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-12"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.009-5.824-2.709M15 6.291A7.962 7.962 0 0012 5c-2.34 0-4.29 1.009-5.824 2.709"
-              />
-            </svg>
-            <h3
-              class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-            >
-              Aucune formation trouvée
-            </h3>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              Essayez de modifier vos critères de recherche
-            </p>
-            <div class="mt-6">
-              <BaseButton variant="outline" @click="clearFilters">
+              <div
+                class="w-24 h-24 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-6"
+              >
+                <svg
+                  class="w-12 h-12 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  />
+                </svg>
+              </div>
+              <h3
+                class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3"
+              >
+                Aucune formation trouvée
+              </h3>
+              <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+                Essayez de modifier vos critères de recherche ou d'effacer les
+                filtres
+              </p>
+              <BaseButton
+                variant="outline"
+                @click="clearFilters"
+                class="border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+              >
+                <template #icon-left>
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </template>
                 Effacer les filtres
               </BaseButton>
             </div>
@@ -242,7 +417,7 @@
           <!-- Trainings Grid -->
           <div
             v-else-if="viewMode === 'grid'"
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             <TrainingCard
               v-for="training in filteredTrainings"
@@ -252,7 +427,7 @@
           </div>
 
           <!-- Trainings List -->
-          <div v-else class="space-y-4">
+          <div v-else class="space-y-6">
             <div
               v-for="training in filteredTrainings"
               :key="training.id"
@@ -433,6 +608,22 @@ const handleSearchSubmit = (value) => {
 
 const applyFilters = () => {
   trainingsStore.setFilters(filters.value);
+};
+
+const toggleThemeFilter = (theme) => {
+  filters.value.theme = filters.value.theme === theme ? "" : theme;
+  applyFilters();
+};
+
+const toggleFormatFilter = (format) => {
+  filters.value.format = filters.value.format === format ? "" : format;
+  applyFilters();
+};
+
+const toggleDifficultyFilter = (difficulty) => {
+  filters.value.difficulty =
+    filters.value.difficulty === difficulty ? "" : difficulty;
+  applyFilters();
 };
 
 const clearFilters = () => {

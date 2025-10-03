@@ -14,16 +14,30 @@ export const useAuthStore = defineStore("auth", () => {
   const isProfessional = computed(() =>
     ["pharmacist", "doctor", "student", "midwife"].includes(userRole.value)
   );
-  const isStructure = computed(() =>
+  const isLaboratory = computed(() =>
     ["laboratory", "hospital", "clinic"].includes(userRole.value)
   );
+
+  // Legacy getter for backward compatibility
+  const isStructure = computed(() => isLaboratory.value);
+
+  // Fonction pour déterminer le dashboard approprié
+  const getDashboardRoute = (role) => {
+    if (["pharmacist", "doctor", "student", "midwife"].includes(role)) {
+      return "/professional/dashboard";
+    } else if (["laboratory", "hospital", "clinic"].includes(role)) {
+      return "/laboratory/dashboard";
+    } else if (role === "admin") {
+      return "/admin/dashboard";
+    }
+    return "/";
+  };
 
   // Legacy getters for backward compatibility
   const isSponsor = computed(() => userRole.value === "sponsor");
   const isPharmacist = computed(() => userRole.value === "pharmacist");
   const isDoctor = computed(() => userRole.value === "doctor");
   const isStudent = computed(() => userRole.value === "student");
-  const isLaboratory = computed(() => userRole.value === "laboratory");
 
   // Actions
   const login = async (credentials) => {
@@ -49,7 +63,10 @@ export const useAuthStore = defineStore("auth", () => {
       localStorage.setItem("user", JSON.stringify(mockUser));
       localStorage.setItem("isAuthenticated", "true");
 
-      return { success: true, user: mockUser };
+      // Déterminer le dashboard approprié
+      const dashboardRoute = getDashboardRoute(credentials.role);
+
+      return { success: true, user: mockUser, redirectTo: dashboardRoute };
     } catch (error) {
       return { success: false, error: error.message };
     } finally {
@@ -79,7 +96,10 @@ export const useAuthStore = defineStore("auth", () => {
       localStorage.setItem("user", JSON.stringify(newUser));
       localStorage.setItem("isAuthenticated", "true");
 
-      return { success: true, user: newUser };
+      // Déterminer le dashboard approprié
+      const dashboardRoute = getDashboardRoute(userData.role);
+
+      return { success: true, user: newUser, redirectTo: dashboardRoute };
     } catch (error) {
       return { success: false, error: error.message };
     } finally {
@@ -164,13 +184,13 @@ export const useAuthStore = defineStore("auth", () => {
     userRole,
     isAdmin,
     isProfessional,
-    isStructure,
+    isLaboratory,
+    isStructure, // Legacy getter for backward compatibility
     // Legacy getters
     isSponsor,
     isPharmacist,
     isDoctor,
     isStudent,
-    isLaboratory,
 
     // Actions
     login,
@@ -180,5 +200,6 @@ export const useAuthStore = defineStore("auth", () => {
     toggleDarkMode,
     updateProfile,
     updateUser,
+    getDashboardRoute,
   };
 });

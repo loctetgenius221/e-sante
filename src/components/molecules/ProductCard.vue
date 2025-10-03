@@ -30,7 +30,7 @@
     </div>
 
     <!-- Product Info -->
-    <div class="p-3">
+    <div class="p-4">
       <!-- Manufacturer -->
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">
         {{ product.manufacturer }}
@@ -53,12 +53,12 @@
       </BaseBadge>
 
       <!-- Description -->
-      <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-1">
         {{ product.description }}
       </p>
 
-      <!-- Product Details -->
-      <div class="space-y-2 mb-4">
+      <!-- Key Info -->
+      <div class="space-y-1 mb-4">
         <div class="flex justify-between text-sm">
           <span class="text-gray-500 dark:text-gray-400">Prix:</span>
           <span class="font-medium text-gray-900 dark:text-gray-100">
@@ -66,29 +66,10 @@
           </span>
         </div>
         <div class="flex justify-between text-sm">
-          <span class="text-gray-500 dark:text-gray-400">Unité:</span>
-          <span class="text-gray-900 dark:text-gray-100">{{
-            product.unit
-          }}</span>
-        </div>
-        <div class="flex justify-between text-sm">
           <span class="text-gray-500 dark:text-gray-400">Stock:</span>
           <span class="text-gray-900 dark:text-gray-100"
             >{{ product.stock }} unités</span
           >
-        </div>
-      </div>
-
-      <!-- Expiry Date -->
-      <div class="mb-4">
-        <div class="flex justify-between text-sm">
-          <span class="text-gray-500 dark:text-gray-400">Expiration:</span>
-          <span
-            class="font-medium"
-            :class="getExpiryDateClass(product.expiryDate)"
-          >
-            {{ formatDate(product.expiryDate) }}
-          </span>
         </div>
       </div>
 
@@ -251,6 +232,13 @@ const handleViewDetails = () => {
 </script>
 
 <style scoped>
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

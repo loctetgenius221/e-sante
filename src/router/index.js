@@ -89,48 +89,50 @@ const router = createRouter({
     {
       path: "/club",
       name: "club",
-      component: () => import("@/components/pages/ClubPage.vue"),
+      redirect: "/club/dashboard",
       meta: { title: "Club Digital", requiresAuth: true },
-      children: [
-        {
-          path: "",
-          name: "club-home",
-          component: () => import("@/components/pages/club/ClubHomePage.vue"),
-          meta: { title: "Accueil Club" },
-        },
-        {
-          path: "forum",
-          name: "club-forum",
-          component: () => import("@/components/pages/club/ForumPage.vue"),
-          meta: { title: "Forum" },
-        },
-        {
-          path: "forum/:id",
-          name: "forum-thread",
-          component: () =>
-            import("@/components/pages/club/ForumThreadPage.vue"),
-          meta: { title: "Sujet du Forum" },
-        },
-        {
-          path: "messagerie",
-          name: "club-messages",
-          component: () => import("@/components/pages/club/MessagesPage.vue"),
-          meta: { title: "Messagerie" },
-        },
-        {
-          path: "evenements",
-          name: "club-events",
-          component: () => import("@/components/pages/club/EventsPage.vue"),
-          meta: { title: "Événements" },
-        },
-        {
-          path: "opportunites",
-          name: "club-opportunities",
-          component: () =>
-            import("@/components/pages/club/OpportunitiesPage.vue"),
-          meta: { title: "Opportunités" },
-        },
-      ],
+    },
+    {
+      path: "/club/dashboard",
+      name: "club-dashboard",
+      component: () => import("@/components/pages/club/ClubHomePage.vue"),
+      meta: { title: "Tableau de Bord Club", requiresAuth: true },
+    },
+    {
+      path: "/club/about",
+      name: "club-about",
+      component: () => import("@/components/pages/ClubPage.vue"),
+      meta: { title: "À propos du Club", requiresAuth: true },
+    },
+    {
+      path: "/club/forum",
+      name: "club-forum",
+      component: () => import("@/components/pages/club/ForumPage.vue"),
+      meta: { title: "Forum", requiresAuth: true },
+    },
+    {
+      path: "/club/forum/:id",
+      name: "forum-thread",
+      component: () => import("@/components/pages/club/ForumThreadPage.vue"),
+      meta: { title: "Sujet du Forum", requiresAuth: true },
+    },
+    {
+      path: "/club/messagerie",
+      name: "club-messages",
+      component: () => import("@/components/pages/club/MessagesPage.vue"),
+      meta: { title: "Messagerie", requiresAuth: true },
+    },
+    {
+      path: "/club/evenements",
+      name: "club-events",
+      component: () => import("@/components/pages/club/EventsPage.vue"),
+      meta: { title: "Événements", requiresAuth: true },
+    },
+    {
+      path: "/club/opportunites",
+      name: "club-opportunities",
+      component: () => import("@/components/pages/club/OpportunitiesPage.vue"),
+      meta: { title: "Opportunités", requiresAuth: true },
     },
     {
       path: "/services-pharmacie",
@@ -215,10 +217,73 @@ const router = createRouter({
     {
       path: "/professional-dashboard",
       name: "professional-dashboard",
+      redirect: "/professional/dashboard",
+    },
+    {
+      path: "/professional/dashboard",
+      name: "professional-dashboard-new",
       component: () =>
-        import("@/components/pages/dashboards/ProfessionalDashboardPage.vue"),
+        import("@/components/pages/dashboards/ProfessionalDashboard.vue"),
       meta: {
-        title: "Mon Espace Formation",
+        title: "Tableau de Bord Professionnel",
+        requiresAuth: true,
+        requiresRole: ["pharmacist", "doctor", "student", "midwife"],
+      },
+    },
+    {
+      path: "/professional/courses",
+      name: "professional-courses",
+      component: () =>
+        import("@/components/pages/dashboards/ProfessionalCoursesPage.vue"),
+      meta: {
+        title: "Mes Formations",
+        requiresAuth: true,
+        requiresRole: ["pharmacist", "doctor", "student", "midwife"],
+      },
+    },
+    {
+      path: "/professional/certificates",
+      name: "professional-certificates",
+      component: () =>
+        import(
+          "@/components/pages/dashboards/ProfessionalCertificatesPage.vue"
+        ),
+      meta: {
+        title: "Mes Certificats",
+        requiresAuth: true,
+        requiresRole: ["pharmacist", "doctor", "student", "midwife"],
+      },
+    },
+    {
+      path: "/professional/courses/:id",
+      name: "professional-course-detail",
+      component: () =>
+        import(
+          "@/components/pages/dashboards/ProfessionalCourseDetailPage.vue"
+        ),
+      meta: {
+        title: "Détail de la Formation",
+        requiresAuth: true,
+        requiresRole: ["pharmacist", "doctor", "student", "midwife"],
+      },
+    },
+    {
+      path: "/professional/courses/:courseId/lesson/:lessonId",
+      name: "professional-lesson",
+      component: () =>
+        import("@/components/pages/dashboards/ProfessionalLessonPage.vue"),
+      meta: {
+        title: "Leçon",
+        requiresAuth: true,
+        requiresRole: ["pharmacist", "doctor", "student", "midwife"],
+      },
+    },
+    {
+      path: "/professional/courses/:courseId/quiz",
+      name: "professional-quiz",
+      component: () => import("@/components/pages/QuizPage.vue"),
+      meta: {
+        title: "Quiz",
         requiresAuth: true,
         requiresRole: ["pharmacist", "doctor", "student", "midwife"],
       },
@@ -226,10 +291,70 @@ const router = createRouter({
     {
       path: "/structure-dashboard",
       name: "structure-dashboard",
+      redirect: "/laboratory/dashboard",
+    },
+    {
+      path: "/laboratory/dashboard",
+      name: "laboratory-dashboard",
       component: () =>
-        import("@/components/pages/dashboards/StructureDashboardPage.vue"),
+        import("@/components/pages/dashboards/LaboratoryDashboard.vue"),
       meta: {
-        title: "Tableau de Bord Structure",
+        title: "Tableau de Bord Laboratoire",
+        requiresAuth: true,
+        requiresRole: ["laboratory", "hospital", "clinic"],
+      },
+    },
+    {
+      path: "/laboratory/trainings",
+      name: "laboratory-trainings",
+      component: () =>
+        import("@/components/pages/dashboards/LaboratoryTrainingsPage.vue"),
+      meta: {
+        title: "Mes Formations",
+        requiresAuth: true,
+        requiresRole: ["laboratory", "hospital", "clinic"],
+      },
+    },
+    {
+      path: "/laboratory/products",
+      name: "laboratory-products",
+      component: () =>
+        import("@/components/pages/dashboards/LaboratoryProductsPage.vue"),
+      meta: {
+        title: "Mes Produits",
+        requiresAuth: true,
+        requiresRole: ["laboratory", "hospital", "clinic"],
+      },
+    },
+    {
+      path: "/laboratory/requests",
+      name: "laboratory-requests",
+      component: () =>
+        import("@/components/pages/dashboards/LaboratoryRequestsPage.vue"),
+      meta: {
+        title: "Demandes",
+        requiresAuth: true,
+        requiresRole: ["laboratory", "hospital", "clinic"],
+      },
+    },
+    {
+      path: "/laboratory/analytics",
+      name: "laboratory-analytics",
+      component: () =>
+        import("@/components/pages/dashboards/LaboratoryAnalyticsPage.vue"),
+      meta: {
+        title: "Analytics",
+        requiresAuth: true,
+        requiresRole: ["laboratory", "hospital", "clinic"],
+      },
+    },
+    {
+      path: "/laboratory/profile",
+      name: "laboratory-profile",
+      component: () =>
+        import("@/components/pages/dashboards/LaboratoryProfilePage.vue"),
+      meta: {
+        title: "Profil",
         requiresAuth: true,
         requiresRole: ["laboratory", "hospital", "clinic"],
       },
@@ -247,6 +372,88 @@ const router = createRouter({
     {
       path: "/admin",
       name: "admin",
+      redirect: "/admin/dashboard",
+    },
+    {
+      path: "/admin/dashboard",
+      name: "admin-dashboard",
+      component: () =>
+        import("@/components/pages/dashboards/AdminDashboard.vue"),
+      meta: {
+        title: "Tableau de Bord Administrateur",
+        requiresAuth: true,
+        requiresRole: "admin",
+      },
+    },
+    {
+      path: "/admin/users",
+      name: "admin-users",
+      component: () =>
+        import("@/components/pages/dashboards/AdminUsersPage.vue"),
+      meta: {
+        title: "Gestion des Utilisateurs",
+        requiresAuth: true,
+        requiresRole: "admin",
+      },
+    },
+    {
+      path: "/admin/trainings",
+      name: "admin-trainings",
+      component: () =>
+        import("@/components/pages/dashboards/AdminTrainingsPage.vue"),
+      meta: {
+        title: "Gestion des Formations",
+        requiresAuth: true,
+        requiresRole: "admin",
+      },
+    },
+    {
+      path: "/admin/certificates",
+      name: "admin-certificates",
+      component: () =>
+        import("@/components/pages/dashboards/AdminCertificatesPage.vue"),
+      meta: {
+        title: "Gestion des Certificats",
+        requiresAuth: true,
+        requiresRole: "admin",
+      },
+    },
+    {
+      path: "/admin/laboratories",
+      name: "admin-laboratories",
+      component: () =>
+        import("@/components/pages/dashboards/AdminLaboratoriesPage.vue"),
+      meta: {
+        title: "Gestion des Laboratoires",
+        requiresAuth: true,
+        requiresRole: "admin",
+      },
+    },
+    {
+      path: "/admin/analytics",
+      name: "admin-analytics",
+      component: () =>
+        import("@/components/pages/dashboards/AdminAnalyticsPage.vue"),
+      meta: {
+        title: "Analytics",
+        requiresAuth: true,
+        requiresRole: "admin",
+      },
+    },
+    {
+      path: "/admin/settings",
+      name: "admin-settings",
+      component: () =>
+        import("@/components/pages/dashboards/AdminSettingsPage.vue"),
+      meta: {
+        title: "Paramètres",
+        requiresAuth: true,
+        requiresRole: "admin",
+      },
+    },
+    {
+      path: "/admin-legacy",
+      name: "admin-legacy",
       component: () => import("@/components/pages/AdminDashboardPage.vue"),
       meta: {
         title: "Administration",
@@ -256,7 +463,7 @@ const router = createRouter({
       children: [
         {
           path: "",
-          name: "admin-dashboard",
+          name: "admin-dashboard-legacy",
           component: () => import("@/components/pages/admin/DashboardPage.vue"),
           meta: { title: "Tableau de Bord Admin" },
         },
@@ -300,6 +507,12 @@ const router = createRouter({
       meta: { title: "Mentions Légales" },
     },
     {
+      path: "/debug-auth",
+      name: "debug-auth",
+      component: () => import("@/components/pages/DebugAuthPage.vue"),
+      meta: { title: "Debug Authentication" },
+    },
+    {
       path: "/:pathMatch(.*)*",
       name: "not-found",
       component: () => import("@/components/pages/NotFoundPage.vue"),
@@ -340,11 +553,11 @@ router.beforeEach(async (to, from, next) => {
     if (!requiredRoles.includes(userRole)) {
       // Redirect to appropriate dashboard based on user role
       if (authStore.isProfessional) {
-        next({ name: "professional-dashboard" });
-      } else if (authStore.isStructure) {
-        next({ name: "structure-dashboard" });
+        next({ name: "professional-dashboard-new" });
+      } else if (authStore.isLaboratory) {
+        next({ name: "laboratory-dashboard" });
       } else if (authStore.isAdmin) {
-        next({ name: "admin" });
+        next({ name: "admin-dashboard" });
       } else {
         next({ name: "home" });
       }
@@ -356,11 +569,11 @@ router.beforeEach(async (to, from, next) => {
   if (to.meta.guest && authStore.isAuthenticated) {
     // Redirect to appropriate dashboard based on user role
     if (authStore.isProfessional) {
-      next({ name: "professional-dashboard" });
-    } else if (authStore.isStructure) {
-      next({ name: "structure-dashboard" });
+      next({ name: "professional-dashboard-new" });
+    } else if (authStore.isLaboratory) {
+      next({ name: "laboratory-dashboard" });
     } else if (authStore.isAdmin) {
-      next({ name: "admin" });
+      next({ name: "admin-dashboard" });
     } else {
       next({ name: "home" });
     }

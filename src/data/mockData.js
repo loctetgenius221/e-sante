@@ -9,7 +9,8 @@ export const mockTrainings = [
       "Formation complète sur la pharmacovigilance, la surveillance des effets indésirables et la gestion des risques liés aux médicaments.",
     shortDescription:
       "Maîtrisez la pharmacovigilance et la sécurité des médicaments",
-    image: "/images/trainings/pharmacovigilance.jpg",
+    image:
+      "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop&crop=center",
     theme: "Pharmacovigilance",
     format: "vidéo",
     language: "fr",
@@ -28,7 +29,8 @@ export const mockTrainings = [
     instructor: {
       name: "Dr. Fatou Sarr",
       title: "Pharmacologue, CHU de Dakar",
-      avatar: "/images/instructors/fatou-sarr.jpg",
+      avatar:
+        "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
     },
     lessons: [
       {
@@ -84,7 +86,8 @@ export const mockTrainings = [
     description:
       "Apprenez à identifier, prévenir et gérer les interactions médicamenteuses pour optimiser la sécurité des patients.",
     shortDescription: "Prévenez et gérez les interactions médicamenteuses",
-    image: "/images/trainings/interactions.jpg",
+    image:
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=600&fit=crop&crop=center",
     theme: "Interactions",
     format: "vidéo",
     language: "fr",
@@ -98,7 +101,8 @@ export const mockTrainings = [
     instructor: {
       name: "Dr. Moussa Diagne",
       title: "Pharmacien clinicien, Hôpital Principal",
-      avatar: "/images/instructors/moussa-diagne.jpg",
+      avatar:
+        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face",
     },
     lessons: [
       {
@@ -147,7 +151,8 @@ export const mockTrainings = [
     description:
       "Formation spécialisée sur les affections dermatologiques courantes et leur prise en charge en officine.",
     shortDescription: "Maîtrisez la dermatologie en pharmacie",
-    image: "/images/trainings/dermatologie.jpg",
+    image:
+      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&h=600&fit=crop&crop=center",
     theme: "Dermatologie",
     format: "audio",
     language: "fr",
@@ -161,7 +166,8 @@ export const mockTrainings = [
     instructor: {
       name: "Dr. Aïcha Ba",
       title: "Dermatologue, Clinique privée",
-      avatar: "/images/instructors/aicha-ba.jpg",
+      avatar:
+        "https://images.unsplash.com/photo-1594824374891-8b5b0b5b5b5b?w=400&h=400&fit=crop&crop=face",
     },
     lessons: [
       {
@@ -202,7 +208,8 @@ export const mockTrainings = [
     description:
       "Optimisez la gestion de vos stocks pharmaceutiques et maîtrisez les techniques d'approvisionnement.",
     shortDescription: "Optimisez votre gestion de stocks",
-    image: "/images/trainings/stocks.jpg",
+    image:
+      "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=800&h=600&fit=crop&crop=center",
     theme: "Gestion",
     format: "vidéo",
     language: "fr",
@@ -216,7 +223,8 @@ export const mockTrainings = [
     instructor: {
       name: "M. Ibrahima Ndiaye",
       title: "Gestionnaire de pharmacie, 15 ans d'expérience",
-      avatar: "/images/instructors/ibrahima-ndiaye.jpg",
+      avatar:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
     },
     lessons: [
       {
@@ -258,7 +266,8 @@ export const mockUsers = [
     name: "Dr. Aminata Diop",
     email: "aminata.diop@example.com",
     role: "pharmacist",
-    avatar: "/images/avatars/aminata-diop.jpg",
+    avatar:
+      "https://images.unsplash.com/photo-1594824374891-8b5b0b5b5b5b?w=400&h=400&fit=crop&crop=face",
     status: "active",
     joinedAt: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000).toISOString(),
     lastLogin: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
@@ -271,7 +280,8 @@ export const mockUsers = [
     name: "Dr. Moussa Fall",
     email: "moussa.fall@example.com",
     role: "doctor",
-    avatar: "/images/avatars/moussa-fall.jpg",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
     status: "active",
     joinedAt: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
     lastLogin: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
@@ -284,7 +294,8 @@ export const mockUsers = [
     name: "Fatou Sarr",
     email: "fatou.sarr@example.com",
     role: "student",
-    avatar: "/images/avatars/fatou-sarr.jpg",
+    avatar:
+      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
     status: "active",
     joinedAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
     lastLogin: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
@@ -407,7 +418,8 @@ export const mockProducts = [
     category: "Antalgique",
     description:
       "Antalgique et antipyrétique pour le traitement de la douleur et de la fièvre",
-    image: "/images/products/paracetamol.jpg",
+    image:
+      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop&crop=center",
     price: 1500,
     unit: "boîte de 20 comprimés",
     prescription: false,
@@ -442,7 +454,8 @@ export const mockProducts = [
     category: "Antibiotique",
     description:
       "Antibiotique de la famille des pénicillines pour le traitement des infections bactériennes",
-    image: "/images/products/amoxicilline.jpg",
+    image:
+      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop&crop=center",
     price: 2500,
     unit: "boîte de 12 gélules",
     prescription: true,
@@ -481,7 +494,8 @@ export const mockProducts = [
     category: "Antalgique",
     description:
       "Anti-inflammatoire non stéroïdien pour le traitement de la douleur et de l'inflammation",
-    image: "/images/products/ibuprofene.jpg",
+    image:
+      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop&crop=center",
     price: 1800,
     unit: "boîte de 20 comprimés",
     prescription: false,
@@ -517,7 +531,8 @@ export const mockProducts = [
     category: "Vitamine",
     description:
       "Complément alimentaire en vitamine D3 pour renforcer les os et le système immunitaire",
-    image: "/images/products/vitamine-d3.jpg",
+    image:
+      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop&crop=center",
     price: 2200,
     unit: "boîte de 60 gélules",
     prescription: false,
