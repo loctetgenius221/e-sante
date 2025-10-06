@@ -486,10 +486,7 @@
       </section>
 
       <!-- Club Digital Highlight -->
-      <section
-        v-if="authStore.isAuthenticated"
-        class="py-16 bg-white dark:bg-gray-900"
-      >
+      <section class="py-16 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             class="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8 md:p-12 text-center text-white"
@@ -564,6 +561,177 @@
                 loading="lazy"
               />
             </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section
+        id="a-propos"
+        class="py-16 bg-white dark:bg-gray-900"
+        aria-labelledby="about-heading"
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2
+                id="about-heading"
+                class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4"
+              >
+                À propos de Front E‑Santé
+              </h2>
+              <p class="text-lg text-gray-600 dark:text-gray-400 mb-6">
+                Notre mission est d'accompagner les professionnels de santé au
+                Sénégal avec des formations certifiantes, pratiques et alignées
+                sur les besoins du terrain, tout en garantissant accessibilité,
+                qualité pédagogique et protection des données.
+              </p>
+              <ul class="space-y-4" aria-label="Meilleures pratiques">
+                <li class="flex items-start gap-3">
+                  <span
+                    class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="font-semibold text-gray-900 dark:text-gray-100">
+                      Accessibilité inclusive
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-400">
+                      Contrastes adaptés, navigation au clavier, libellés ARIA
+                      et contenu lisible.
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span
+                    class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="font-semibold text-gray-900 dark:text-gray-100">
+                      Qualité pédagogique
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-400">
+                      Contenus à jour, évaluations formatives, parcours
+                      modulaires et certificats reconnus.
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span
+                    class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="font-semibold text-gray-900 dark:text-gray-100">
+                      Sécurité des données
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-400">
+                      Conformité RGPD, chiffrement en transit, et respect de la
+                      confidentialité.
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span
+                    class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="font-semibold text-gray-900 dark:text-gray-100">
+                      Performance et fiabilité
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-400">
+                      Chargements rapides, responsive design et disponibilité
+                      élevée de la plateforme.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+              <div class="mt-8">
+                <BaseButton
+                  variant="outline"
+                  size="lg"
+                  @click="$router.push('/content/a-propos')"
+                  aria-label="En savoir plus sur Front E‑Santé"
+                >
+                  En savoir plus
+                  <template #icon-right>
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </template>
+                </BaseButton>
+              </div>
+            </div>
+            <div class="relative">
+              <img
+                src="https://images.unsplash.com/photo-1580281657527-47f249e7c44e?w=1200&h=900&fit=crop&crop=center"
+                alt="Professionnels de santé collaborant lors d'une formation"
+                class="w-full h-80 md:h-96 object-cover rounded-2xl shadow-2xl"
+                loading="lazy"
+              />
+              <div
+                class="absolute -top-4 -right-4 w-24 h-24 bg-blue-500/20 rounded-full blur-xl"
+              ></div>
+              <div
+                class="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"
+              ></div>
+            </div>
           </div>
         </div>
       </section>
