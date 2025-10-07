@@ -17,7 +17,7 @@ const router = createRouter({
           path: "login",
           name: "login",
           component: () => import("@/components/pages/auth/LoginPage.vue"),
-          meta: { title: "Connexion", guest: true },
+          meta: { title: "Connexion", guest: false },
         },
         {
           path: "signup",
@@ -43,19 +43,19 @@ const router = createRouter({
       path: "/formations/:slug/lesson/:id",
       name: "lesson",
       component: () => import("@/components/pages/LessonPage.vue"),
-      meta: { title: "Leçon", requiresAuth: true },
+      meta: { title: "Leçon", requiresAuth: false },
     },
     {
       path: "/formations/:slug/quiz",
       name: "quiz",
       component: () => import("@/components/pages/QuizPage.vue"),
-      meta: { title: "Quiz", requiresAuth: true },
+      meta: { title: "Quiz", requiresAuth: false },
     },
     {
       path: "/mon-compte",
       name: "account",
       component: () => import("@/components/pages/AccountPage.vue"),
-      meta: { title: "Mon Compte", requiresAuth: true },
+      meta: { title: "Mon Compte", requiresAuth: false },
       children: [
         {
           path: "",
@@ -90,55 +90,55 @@ const router = createRouter({
       path: "/club",
       name: "club",
       redirect: "/club/dashboard",
-      meta: { title: "Club Digital", requiresAuth: true },
+      meta: { title: "Club Digital", requiresAuth: false },
     },
     {
       path: "/club/dashboard",
       name: "club-dashboard",
       component: () => import("@/components/pages/club/ClubHomePage.vue"),
-      meta: { title: "Tableau de Bord Club", requiresAuth: true },
+      meta: { title: "Tableau de Bord Club", requiresAuth: false },
     },
     {
       path: "/club/about",
       name: "club-about",
       component: () => import("@/components/pages/ClubPage.vue"),
-      meta: { title: "À propos du Club", requiresAuth: true },
+      meta: { title: "À propos du Club", requiresAuth: false },
     },
     {
       path: "/club/forum",
       name: "club-forum",
       component: () => import("@/components/pages/club/ForumPage.vue"),
-      meta: { title: "Forum", requiresAuth: true },
+      meta: { title: "Forum", requiresAuth: false },
     },
     {
       path: "/club/forum/:id",
       name: "forum-thread",
       component: () => import("@/components/pages/club/ForumThreadPage.vue"),
-      meta: { title: "Sujet du Forum", requiresAuth: true },
+      meta: { title: "Sujet du Forum", requiresAuth: false },
     },
     {
       path: "/club/messagerie",
       name: "club-messages",
       component: () => import("@/components/pages/club/MessagesPage.vue"),
-      meta: { title: "Messagerie", requiresAuth: true },
+      meta: { title: "Messagerie", requiresAuth: false },
     },
     {
       path: "/club/evenements",
       name: "club-events",
       component: () => import("@/components/pages/club/EventsPage.vue"),
-      meta: { title: "Événements", requiresAuth: true },
+      meta: { title: "Événements", requiresAuth: false },
     },
     {
       path: "/club/opportunites",
       name: "club-opportunities",
       component: () => import("@/components/pages/club/OpportunitiesPage.vue"),
-      meta: { title: "Opportunités", requiresAuth: true },
+      meta: { title: "Opportunités", requiresAuth: false },
     },
     {
       path: "/services-pharmacie",
       name: "pharmacy-services",
       component: () => import("@/components/pages/PharmacyServicesPage.vue"),
-      meta: { title: "Services Pharmacie", requiresAuth: true },
+      meta: { title: "Services Pharmacie", requiresAuth: false },
       children: [
         {
           path: "",
@@ -189,7 +189,7 @@ const router = createRouter({
         import("@/components/pages/courses/CourseDetailPage.vue"),
       meta: {
         title: "Détail du Cours",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["pharmacist", "doctor", "student", "midwife"],
       },
     },
@@ -199,7 +199,7 @@ const router = createRouter({
       component: () => import("@/components/pages/courses/CourseQuizPage.vue"),
       meta: {
         title: "Quiz du Cours",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["pharmacist", "doctor", "student", "midwife"],
       },
     },
@@ -210,7 +210,7 @@ const router = createRouter({
         import("@/components/pages/courses/CourseCertificatePage.vue"),
       meta: {
         title: "Certificat du Cours",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["pharmacist", "doctor", "student", "midwife"],
       },
     },
@@ -226,7 +226,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/ProfessionalDashboard.vue"),
       meta: {
         title: "Tableau de Bord Professionnel",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["pharmacist", "doctor", "student", "midwife"],
       },
     },
@@ -237,7 +237,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/ProfessionalCoursesPage.vue"),
       meta: {
         title: "Mes Formations",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["pharmacist", "doctor", "student", "midwife"],
       },
     },
@@ -250,7 +250,7 @@ const router = createRouter({
         ),
       meta: {
         title: "Mes Certificats",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["pharmacist", "doctor", "student", "midwife"],
       },
     },
@@ -263,7 +263,7 @@ const router = createRouter({
         ),
       meta: {
         title: "Détail de la Formation",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["pharmacist", "doctor", "student", "midwife"],
       },
     },
@@ -274,7 +274,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/ProfessionalLessonPage.vue"),
       meta: {
         title: "Leçon",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["pharmacist", "doctor", "student", "midwife"],
       },
     },
@@ -284,7 +284,7 @@ const router = createRouter({
       component: () => import("@/components/pages/QuizPage.vue"),
       meta: {
         title: "Quiz",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["pharmacist", "doctor", "student", "midwife"],
       },
     },
@@ -300,7 +300,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/LaboratoryDashboard.vue"),
       meta: {
         title: "Tableau de Bord Laboratoire",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["laboratory", "hospital", "clinic"],
       },
     },
@@ -311,7 +311,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/LaboratoryTrainingsPage.vue"),
       meta: {
         title: "Mes Formations",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["laboratory", "hospital", "clinic"],
       },
     },
@@ -322,7 +322,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/LaboratoryProductsPage.vue"),
       meta: {
         title: "Mes Produits",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["laboratory", "hospital", "clinic"],
       },
     },
@@ -333,7 +333,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/LaboratoryRequestsPage.vue"),
       meta: {
         title: "Demandes",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["laboratory", "hospital", "clinic"],
       },
     },
@@ -344,7 +344,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/LaboratoryAnalyticsPage.vue"),
       meta: {
         title: "Analytics",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["laboratory", "hospital", "clinic"],
       },
     },
@@ -355,7 +355,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/LaboratoryProfilePage.vue"),
       meta: {
         title: "Profil",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: ["laboratory", "hospital", "clinic"],
       },
     },
@@ -365,7 +365,7 @@ const router = createRouter({
       component: () => import("@/components/pages/SponsorDashboardPage.vue"),
       meta: {
         title: "Tableau de Bord Partenaire",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: "sponsor",
       },
     },
@@ -381,7 +381,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/AdminDashboard.vue"),
       meta: {
         title: "Tableau de Bord Administrateur",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: "admin",
       },
     },
@@ -392,7 +392,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/AdminUsersPage.vue"),
       meta: {
         title: "Gestion des Utilisateurs",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: "admin",
       },
     },
@@ -403,7 +403,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/AdminTrainingsPage.vue"),
       meta: {
         title: "Gestion des Formations",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: "admin",
       },
     },
@@ -414,7 +414,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/AdminCertificatesPage.vue"),
       meta: {
         title: "Gestion des Certificats",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: "admin",
       },
     },
@@ -425,7 +425,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/AdminLaboratoriesPage.vue"),
       meta: {
         title: "Gestion des Laboratoires",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: "admin",
       },
     },
@@ -436,7 +436,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/AdminAnalyticsPage.vue"),
       meta: {
         title: "Analytics",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: "admin",
       },
     },
@@ -447,7 +447,7 @@ const router = createRouter({
         import("@/components/pages/dashboards/AdminSettingsPage.vue"),
       meta: {
         title: "Paramètres",
-        requiresAuth: true,
+        requiresAuth: false,
         requiresRole: "admin",
       },
     },
