@@ -139,7 +139,7 @@
               </div>
 
               <!-- Step 2: Role Selection -->
-              <div v-if="currentStep === 2" class="space-y-4">
+              <div  class="space-y-4">
                 <h3
                   class="text-lg font-medium text-gray-900 dark:text-gray-100"
                 >
@@ -176,7 +176,7 @@
               </div>
 
               <!-- Step 3: Professional Information -->
-              <div v-if="currentStep === 3" class="space-y-4">
+              <div class="space-y-4">
                 <h3
                   class="text-lg font-medium text-gray-900 dark:text-gray-100"
                 >
@@ -207,7 +207,7 @@
               </div>
 
               <!-- Step 4: Security -->
-              <div v-if="currentStep === 4" class="space-y-4">
+              <div  class="space-y-4">
                 <h3
                   class="text-lg font-medium text-gray-900 dark:text-gray-100"
                 >
