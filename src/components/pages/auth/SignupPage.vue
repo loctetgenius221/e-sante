@@ -9,12 +9,45 @@
           class="mx-auto w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-sm overflow-hidden"
         >
           <!-- Logo -->
-          <div class="flex items-center space-x-3 mb-8">
-            <div
-              class="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center"
+          <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center space-x-3">
+              <div
+                class="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform"
+                style="
+                  background: linear-gradient(135deg, #0b6e6b 0%, #0a5a58 100%);
+                "
+              >
+                <svg
+                  class="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <span class="text-xl font-bold text-gray-900 dark:text-gray-100"
+                  >Synapse</span
+                >
+                <div class="text-xs font-medium" style="color: #0b6e6b">
+                  Professionnels
+                </div>
+              </div>
+            </div>
+
+            <!-- Back to Home Link -->
+            <RouterLink
+              to="/"
+              class="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
             >
               <svg
-                class="w-6 h-6 text-white"
+                class="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -23,18 +56,11 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
                 />
               </svg>
-            </div>
-            <div>
-              <span class="text-xl font-bold text-gray-900 dark:text-gray-100"
-                >Front E-Santé</span
-              >
-              <div class="text-xs text-gray-500 dark:text-gray-400">
-                Sénégal
-              </div>
-            </div>
+              <span class="text-sm font-medium">Retour à l'accueil</span>
+            </RouterLink>
           </div>
 
           <!-- Header -->
@@ -47,7 +73,7 @@
             <p
               class="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-400"
             >
-              Rejoignez la communauté des professionnels de santé
+              Accès réservé aux professionnels de santé
             </p>
           </div>
 
@@ -63,9 +89,14 @@
                   :class="[
                     'w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium',
                     currentStep >= index + 1
-                      ? 'bg-gray-900 text-white'
+                      ? 'text-white'
                       : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400',
                   ]"
+                  :style="
+                    currentStep >= index + 1
+                      ? 'background: linear-gradient(135deg, #0b6e6b 0%, #0a5a58 100%);'
+                      : ''
+                  "
                 >
                   {{ index + 1 }}
                 </div>
@@ -74,9 +105,14 @@
                   :class="[
                     'w-8 sm:w-16 h-1 mx-1 sm:mx-2',
                     currentStep > index + 1
-                      ? 'bg-gray-900'
+                      ? ''
                       : 'bg-gray-200 dark:bg-gray-700',
                   ]"
+                  :style="
+                    currentStep > index + 1
+                      ? 'background: linear-gradient(135deg, #0b6e6b 0%, #0a5a58 100%);'
+                      : ''
+                  "
                 ></div>
               </div>
             </div>
@@ -93,8 +129,102 @@
             class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8"
           >
             <form @submit.prevent="handleSubmit" class="space-y-6">
-              <!-- Step 1: Personal Information -->
+              <!-- Step 1: User Category Selection -->
               <div v-if="currentStep === 1" class="space-y-4">
+                <h3
+                  class="text-lg font-medium text-gray-900 dark:text-gray-100"
+                >
+                  Sélectionnez votre catégorie
+                </h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  Choisissez le type de compte qui correspond à votre profil
+                </p>
+
+                <div class="grid grid-cols-1 gap-4">
+                  <button
+                    v-for="category in userCategories"
+                    :key="category.value"
+                    type="button"
+                    @click="form.userCategory = category.value"
+                    :class="getCategoryButtonClasses(category.value)"
+                    :style="
+                      form.userCategory === category.value
+                        ? 'background: linear-gradient(135deg, #0b6e6b 0%, #0a5a58 100%); border-color: #0b6e6b;'
+                        : ''
+                    "
+                    class="p-4 text-left border rounded-lg transition-all duration-200 hover:shadow-md w-full"
+                  >
+                    <div class="flex items-center">
+                      <svg
+                        class="w-6 h-6 mr-3 flex-shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          :d="category.icon"
+                        />
+                      </svg>
+                      <div>
+                        <span class="font-medium text-lg">{{
+                          category.label
+                        }}</span>
+                        <p class="text-sm opacity-90">
+                          {{ category.description }}
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+                <p
+                  v-if="errors.userCategory"
+                  class="mt-1 text-sm text-red-600 dark:text-red-400"
+                >
+                  {{ errors.userCategory }}
+                </p>
+              </div>
+
+              <!-- Step 2: Role Selection -->
+              <div v-if="currentStep === 2" class="space-y-4">
+                <h3
+                  class="text-lg font-medium text-gray-900 dark:text-gray-100"
+                >
+                  Votre rôle
+                </h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  Sélectionnez votre rôle spécifique
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <button
+                    v-for="role in getAvailableRoles()"
+                    :key="role.value"
+                    type="button"
+                    @click="form.role = role.value"
+                    :class="getRoleButtonClasses(role.value)"
+                    :style="
+                      form.role === role.value
+                        ? 'background: linear-gradient(135deg, #0b6e6b 0%, #0a5a58 100%); border-color: #0b6e6b;'
+                        : ''
+                    "
+                    class="p-3 text-left border rounded-lg transition-all duration-200 hover:shadow-md text-sm w-full"
+                  >
+                    <span class="font-medium">{{ role.label }}</span>
+                  </button>
+                </div>
+                <p
+                  v-if="errors.role"
+                  class="mt-1 text-sm text-red-600 dark:text-red-400"
+                >
+                  {{ errors.role }}
+                </p>
+              </div>
+
+              <!-- Step 3: Personal Information -->
+              <div v-if="currentStep === 3" class="space-y-4">
                 <h3
                   class="text-lg font-medium text-gray-900 dark:text-gray-100"
                 >
@@ -138,76 +268,133 @@
                 />
               </div>
 
-              <!-- Step 2: Role Selection -->
-              <div  class="space-y-4">
-                <h3
-                  class="text-lg font-medium text-gray-900 dark:text-gray-100"
-                >
-                  Votre profession
-                </h3>
-                <p class="text-sm text-gray-600 dark:text-gray-400">
-                  Sélectionnez votre domaine d'activité
-                </p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                  <button
-                    v-for="role in roles"
-                    :key="role.value"
-                    type="button"
-                    @click="form.role = role.value"
-                    :class="getRoleButtonClasses(role.value)"
-                    class="p-3 sm:p-4 text-left border rounded-lg sm:rounded-xl transition-all duration-200 hover:shadow-md text-xs sm:text-sm w-full"
-                  >
-                    <div class="flex items-center min-w-0">
-                      <component
-                        :is="role.icon"
-                        class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0"
-                      />
-                      <span class="font-medium truncate">{{ role.label }}</span>
-                    </div>
-                  </button>
-                </div>
-                <p
-                  v-if="errors.role"
-                  class="mt-1 text-sm text-red-600 dark:text-red-400"
-                >
-                  {{ errors.role }}
-                </p>
-              </div>
-
-              <!-- Step 3: Professional Information -->
-              <div class="space-y-4">
+              <!-- Step 4: Professional Information -->
+              <div v-if="currentStep === 4" class="space-y-4">
                 <h3
                   class="text-lg font-medium text-gray-900 dark:text-gray-100"
                 >
                   Informations professionnelles
                 </h3>
 
-                <BaseInput
-                  v-model="form.institution"
-                  label="Établissement/Institution"
-                  placeholder="Nom de votre établissement"
-                  :error="errors.institution"
-                />
+                <!-- Champs pour professionnels de santé -->
+                <div v-if="form.userCategory === 'health'" class="space-y-4">
+                  <BaseInput
+                    v-model="form.institution"
+                    label="Établissement/Institution"
+                    placeholder="Nom de votre établissement"
+                    :error="errors.institution"
+                  />
 
-                <BaseInput
-                  v-model="form.position"
-                  label="Poste/Fonction"
-                  placeholder="Votre poste actuel"
-                  :error="errors.position"
-                />
+                  <BaseInput
+                    v-model="form.position"
+                    label="Poste/Fonction"
+                    placeholder="Votre poste actuel"
+                    :error="errors.position"
+                  />
 
-                <BaseInput
-                  v-model="form.experience"
-                  type="number"
-                  label="Années d'expérience"
-                  placeholder="0"
-                  :error="errors.experience"
-                />
+                  <BaseInput
+                    v-model="form.experience"
+                    type="number"
+                    label="Années d'expérience"
+                    placeholder="0"
+                    :error="errors.experience"
+                  />
+
+                  <!-- Spécialité pour professionnels de santé -->
+                  <div
+                    v-if="getSelectedRole() && getSelectedRole().specialties"
+                  >
+                    <label
+                      class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
+                      Spécialité
+                    </label>
+                    <select
+                      v-model="form.specialty"
+                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    >
+                      <option value="">Sélectionnez votre spécialité</option>
+                      <option
+                        v-for="specialty in getSelectedRole().specialties"
+                        :key="specialty"
+                        :value="specialty"
+                      >
+                        {{ specialty }}
+                      </option>
+                    </select>
+                    <p
+                      v-if="errors.specialty"
+                      class="mt-1 text-sm text-red-600 dark:text-red-400"
+                    >
+                      {{ errors.specialty }}
+                    </p>
+                  </div>
+
+                  <BaseInput
+                    v-model="form.licenseNumber"
+                    label="Numéro de licence/Ordre"
+                    placeholder="Votre numéro de licence"
+                    :error="errors.licenseNumber"
+                  />
+                </div>
+
+                <!-- Champs pour sponsors -->
+                <div v-if="form.userCategory === 'sponsor'" class="space-y-4">
+                  <BaseInput
+                    v-model="form.institution"
+                    label="Nom de l'organisation"
+                    placeholder="Nom de votre organisation"
+                    :error="errors.institution"
+                    required
+                  />
+
+                  <BaseInput
+                    v-model="form.position"
+                    label="Votre fonction"
+                    placeholder="Votre fonction dans l'organisation"
+                    :error="errors.position"
+                  />
+
+                  <BaseInput
+                    v-model="form.address"
+                    label="Adresse"
+                    placeholder="Adresse complète de l'organisation"
+                    :error="errors.address"
+                    required
+                  />
+
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
+                      Secteur d'activité
+                    </label>
+                    <select
+                      v-model="form.activitySector"
+                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                      required
+                    >
+                      <option value="">Sélectionnez votre secteur</option>
+                      <option
+                        v-for="sector in activitySectors"
+                        :key="sector"
+                        :value="sector"
+                      >
+                        {{ sector }}
+                      </option>
+                    </select>
+                    <p
+                      v-if="errors.activitySector"
+                      class="mt-1 text-sm text-red-600 dark:text-red-400"
+                    >
+                      {{ errors.activitySector }}
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <!-- Step 4: Security -->
-              <div  class="space-y-4">
+              <!-- Step 5: Security -->
+              <div v-if="currentStep === 5" class="space-y-4">
                 <h3
                   class="text-lg font-medium text-gray-900 dark:text-gray-100"
                 >
@@ -277,35 +464,69 @@
               <div
                 class="flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 pt-4 sm:pt-6"
               >
-                <BaseButton
+                <button
                   v-if="currentStep > 1"
                   type="button"
-                  variant="outline"
                   @click="previousStep"
-                  class="px-4 sm:px-6 order-2 sm:order-1"
+                  class="px-4 sm:px-6 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 order-2 sm:order-1"
                 >
                   Précédent
-                </BaseButton>
+                </button>
                 <div v-else class="order-2 sm:order-1"></div>
 
-                <BaseButton
+                <button
                   v-if="currentStep < steps.length"
                   type="button"
-                  variant="primary"
                   @click="nextStep"
-                  class="px-4 sm:px-6 order-1 sm:order-2"
+                  class="px-4 sm:px-6 py-2 text-white font-medium rounded-lg transition-all duration-200 hover:shadow-lg hover:scale-105 order-1 sm:order-2"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #0b6e6b 0%,
+                      #0a5a58 100%
+                    );
+                  "
                 >
                   Suivant
-                </BaseButton>
-                <BaseButton
+                </button>
+                <button
                   v-else
                   type="submit"
-                  variant="primary"
-                  :loading="isLoading"
-                  class="px-4 sm:px-6 order-1 sm:order-2"
+                  :disabled="isLoading"
+                  class="px-4 sm:px-6 py-2 text-white font-medium rounded-lg transition-all duration-200 hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed order-1 sm:order-2"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #0b6e6b 0%,
+                      #0a5a58 100%
+                    );
+                  "
                 >
-                  Créer mon compte
-                </BaseButton>
+                  <span v-if="!isLoading">Créer mon compte</span>
+                  <span v-else class="flex items-center justify-center">
+                    <svg
+                      class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="4"
+                      ></circle>
+                      <path
+                        class="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Création en cours...
+                  </span>
+                </button>
               </div>
             </form>
           </div>
@@ -316,7 +537,8 @@
               Déjà un compte ?
               <RouterLink
                 to="/auth/login"
-                class="font-medium text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300"
+                class="font-medium hover:underline transition-colors"
+                style="color: #0b6e6b"
               >
                 Se connecter
               </RouterLink>
@@ -327,18 +549,28 @@
 
       <!-- Right Section - Image -->
       <div
-        class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-center bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden"
+        class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-center overflow-hidden"
+        style="background: linear-gradient(135deg, #0b6e6b 0%, #0a5a58 100%)"
       >
         <div class="relative w-full h-full">
           <!-- Background Pattern -->
           <div
-            class="absolute inset-0 bg-gradient-to-br from-gray-900/90 to-gray-800/90"
+            class="absolute inset-0"
+            style="
+              background: linear-gradient(
+                135deg,
+                rgba(11, 110, 107, 0.9) 0%,
+                rgba(10, 90, 88, 0.9) 100%
+              );
+            "
           ></div>
           <div
-            class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-48 translate-x-48"
+            class="absolute top-0 right-0 w-96 h-96 rounded-full -translate-y-48 translate-x-48"
+            style="background-color: rgba(255, 255, 255, 0.1)"
           ></div>
           <div
-            class="absolute bottom-0 left-0 w-80 h-80 bg-white/5 rounded-full translate-y-40 -translate-x-40"
+            class="absolute bottom-0 left-0 w-80 h-80 rounded-full translate-y-40 -translate-x-40"
+            style="background-color: rgba(255, 255, 255, 0.05)"
           ></div>
 
           <!-- Content -->
@@ -347,7 +579,8 @@
           >
             <div class="max-w-md">
               <div
-                class="w-24 h-24 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-8"
+                class="w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-8"
+                style="background-color: rgba(255, 255, 255, 0.2)"
               >
                 <svg
                   class="w-12 h-12 text-white"
@@ -400,7 +633,6 @@ import { ref, computed, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import BaseInput from "@/components/atoms/BaseInput.vue";
-import BaseButton from "@/components/atoms/BaseButton.vue";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -410,104 +642,178 @@ const errorMessage = ref("");
 const currentStep = ref(1);
 
 const steps = [
+  "Sélection du rôle",
   "Informations personnelles",
-  "Votre profession",
   "Informations professionnelles",
   "Sécurité",
 ];
 
 const form = reactive({
+  userCategory: "", // "health" ou "sponsor"
+  role: "",
   firstName: "",
   lastName: "",
   email: "",
   phone: "",
-  role: "",
   institution: "",
   position: "",
   experience: "",
+  // Champs spécifiques aux sponsors
+  address: "",
+  activitySector: "",
+  // Champs spécifiques aux professionnels de santé
+  specialty: "",
+  licenseNumber: "",
   password: "",
   confirmPassword: "",
   acceptTerms: false,
 });
 
 const errors = reactive({
+  userCategory: "",
+  role: "",
   firstName: "",
   lastName: "",
   email: "",
   phone: "",
-  role: "",
   institution: "",
   position: "",
   experience: "",
+  address: "",
+  activitySector: "",
+  specialty: "",
+  licenseNumber: "",
   password: "",
   confirmPassword: "",
   acceptTerms: "",
 });
 
-const roles = [
+// Catégories d'utilisateurs
+const userCategories = [
   {
-    value: "pharmacist",
-    label: "Pharmacien",
-    icon: "svg",
-    category: "professional",
-    description: "Professionnel de santé",
-    iconPath:
-      "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z",
+    value: "health",
+    label: "Professionnel de Santé",
+    description: "Médecins, pharmaciens, infirmiers, sages-femmes, etc.",
+    icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
   },
+  {
+    value: "sponsor",
+    label: "Sponsor/Partenaire",
+    description: "Laboratoires, structures, institutions, etc.",
+    icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+  },
+];
+
+// Rôles pour professionnels de santé
+const healthRoles = [
   {
     value: "doctor",
     label: "Médecin",
-    icon: "svg",
-    category: "professional",
-    description: "Professionnel de santé",
-    iconPath:
-      "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
+    specialties: [
+      "Généraliste",
+      "Gynécologue",
+      "Urologue",
+      "Cardiologue",
+      "Urgentiste",
+      "Anesthésiste",
+      "Cancérologue",
+      "Pédiatre",
+      "Dermatologue",
+      "Ophtalmologue",
+      "ORL",
+      "Neurologue",
+      "Psychiatre",
+      "Radiologue",
+      "Chirurgien",
+      "Autre",
+    ],
+  },
+  {
+    value: "pharmacist",
+    label: "Pharmacien",
+    specialties: ["D'officine", "Hospitalier", "Biologiste", "Assistant"],
+  },
+  {
+    value: "nurse",
+    label: "Infirmier d'État (IDE)",
+    specialties: [
+      "Soins généraux",
+      "Bloc opératoire",
+      "Urgences",
+      "Pédiatrie",
+      "Psychiatrie",
+      "Autre",
+    ],
   },
   {
     value: "midwife",
     label: "Sage-femme",
-    icon: "svg",
-    category: "professional",
-    description: "Professionnel de santé",
-    iconPath:
-      "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
+    specialties: ["Sage-femme libérale", "Sage-femme hospitalière", "Autre"],
   },
   {
-    value: "student",
-    label: "Étudiant",
-    icon: "svg",
-    category: "professional",
-    description: "Professionnel de santé",
-    iconPath:
-      "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
+    value: "pharmacy_seller",
+    label: "Vendeur en pharmacie",
+    specialties: ["Vendeur", "Préparateur", "Autre"],
+  },
+];
+
+// Rôles pour sponsors
+const sponsorRoles = [
+  {
+    value: "pharmaceutical_lab",
+    label: "Laboratoire pharmaceutique",
   },
   {
-    value: "laboratory",
-    label: "Laboratoire",
-    icon: "svg",
-    category: "laboratory",
-    description: "Laboratoire/Partenaire",
-    iconPath:
-      "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z",
+    value: "cosmetics_lab",
+    label: "Laboratoire cosmétiques",
   },
   {
-    value: "hospital",
-    label: "Hôpital",
-    icon: "svg",
-    category: "laboratory",
-    description: "Laboratoire/Partenaire",
-    iconPath:
-      "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+    value: "medical_device_lab",
+    label: "Laboratoire dispositifs médicaux",
   },
   {
-    value: "clinic",
-    label: "Clinique",
-    icon: "svg",
-    category: "laboratory",
-    description: "Laboratoire/Partenaire",
-    iconPath:
-      "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+    value: "pharmaceutical_wholesaler",
+    label: "Grossiste pharmaceutique",
   },
+  {
+    value: "pna",
+    label: "PNA",
+  },
+  {
+    value: "arp",
+    label: "ARP",
+  },
+  {
+    value: "medical_order",
+    label: "Ordre des médecins",
+  },
+  {
+    value: "pharmacy_order",
+    label: "Ordre des pharmaciens",
+  },
+  {
+    value: "health_ministry",
+    label: "Ministère de la santé",
+  },
+  {
+    value: "independent_trainer",
+    label: "Formateur indépendant",
+  },
+  {
+    value: "other",
+    label: "Autres",
+  },
+];
+
+// Secteurs d'activité pour sponsors
+const activitySectors = [
+  "Pharmaceutique",
+  "Cosmétique",
+  "Dispositifs médicaux",
+  "Formation",
+  "Institution publique",
+  "Ordre professionnel",
+  "Autre",
 ];
 
 const validateStep = (step) => {
@@ -519,6 +825,16 @@ const validateStep = (step) => {
   let isValid = true;
 
   if (step === 1) {
+    if (!form.userCategory) {
+      errors.userCategory = "Veuillez sélectionner votre catégorie";
+      isValid = false;
+    }
+  } else if (step === 2) {
+    if (!form.role) {
+      errors.role = "Veuillez sélectionner votre rôle";
+      isValid = false;
+    }
+  } else if (step === 3) {
     if (!form.firstName.trim()) {
       errors.firstName = "Le prénom est requis";
       isValid = false;
@@ -534,12 +850,22 @@ const validateStep = (step) => {
       errors.email = "L'email n'est pas valide";
       isValid = false;
     }
-  } else if (step === 2) {
-    if (!form.role) {
-      errors.role = "Veuillez sélectionner votre profession";
-      isValid = false;
-    }
   } else if (step === 4) {
+    if (form.userCategory === "sponsor") {
+      if (!form.institution.trim()) {
+        errors.institution = "Le nom de l'organisation est requis";
+        isValid = false;
+      }
+      if (!form.address.trim()) {
+        errors.address = "L'adresse est requise";
+        isValid = false;
+      }
+      if (!form.activitySector) {
+        errors.activitySector = "Le secteur d'activité est requis";
+        isValid = false;
+      }
+    }
+  } else if (step === 5) {
     if (!form.password) {
       errors.password = "Le mot de passe est requis";
       isValid = false;
@@ -577,17 +903,40 @@ const previousStep = () => {
   }
 };
 
-const getRoleButtonClasses = (roleValue) => {
+const getCategoryButtonClasses = (categoryValue) => {
   return [
-    "w-full p-3 text-left border rounded-lg transition-all duration-200",
-    form.role === roleValue
-      ? "border-gray-900 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+    "w-full p-4 text-left border rounded-lg transition-all duration-200",
+    form.userCategory === categoryValue
+      ? "text-white"
       : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300",
   ];
 };
 
+const getRoleButtonClasses = (roleValue) => {
+  return [
+    "w-full p-3 text-left border rounded-lg transition-all duration-200",
+    form.role === roleValue
+      ? "text-white"
+      : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300",
+  ];
+};
+
+const getAvailableRoles = () => {
+  if (form.userCategory === "health") {
+    return healthRoles;
+  } else if (form.userCategory === "sponsor") {
+    return sponsorRoles;
+  }
+  return [];
+};
+
+const getSelectedRole = () => {
+  const roles = getAvailableRoles();
+  return roles.find((role) => role.value === form.role);
+};
+
 const handleSubmit = async () => {
-  if (!validateStep(4)) {
+  if (!validateStep(5)) {
     return;
   }
 
